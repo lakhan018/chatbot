@@ -1,0 +1,322 @@
+
+<!-- This is an excellent starting point! The HTML structure is clean, semantic, and well-organized. The CSS provides a decent foundation for styling. The JavaScript sets up the form submission and result display. Here's a refined version incorporating the requested features and addressing minor points for improvement: -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Privacy Policy Generator</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <!-- Tailwind CSS (CDN) -->
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        /* Custom styles for a polished look, can be placed in separate CSS file */
+        body {
+            font-family: 'Roboto', sans-serif; /* Modern font */
+            background-color: #f3f4f6; /* Light gray background */
+            color: #374151; /* Dark gray text */
+        }
+
+        .container {
+            max-width: 900px; /* Increased width */
+            margin: 2rem auto;
+            padding: 2rem;
+            background-color: #fff;
+            border-radius: 0.75rem; /* Rounded corners */
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+
+        h1 {
+            font-size: 2.25rem; /* Large heading */
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 2rem;
+            color: #1e3a8a; /* Primary color */
+        }
+
+        label {
+            font-weight: 500;
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #4b5563;
+        }
+
+        input[type="text"],
+        input[type="url"],
+        input[type="email"],
+        textarea {
+            width: 100%;
+            padding: 0.75rem;
+            border-radius: 0.375rem;
+            border: 1px solid #d1d5db;
+            margin-bottom: 1.5rem;
+            font-size: 1rem;
+            color: #374151;
+            transition: border-color 0.2s ease-in-out;
+        }
+
+        input[type="text"]:focus,
+        input[type="url"]:focus,
+        input[type="email"]:focus,
+        textarea:focus {
+            border-color: #2563eb; /* Focus border color */
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.2); /* Focus shadow */
+        }
+
+        textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        button {
+            background-color: #2563eb;
+            color: #fff;
+            padding: 1rem 1.5rem;
+            border: none;
+            border-radius: 0.375rem;
+            font-size: 1.125rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            width: 100%; /* Full width button */
+        }
+
+        button:hover {
+            background-color: #1e40af;
+        }
+
+        #resultArea {
+            margin-top: 2rem;
+            padding: 1.5rem;
+            background-color: #edf2f7;
+            border: 1px solid #e5e7eb;
+            border-radius: 0.375rem;
+            white-space: pre-wrap;
+            word-break: break-word;
+            min-height: 150px;
+            font-family: 'Courier New', monospace;
+            color: #374151;
+            line-height: 1.5;
+        }
+
+        #status {
+            margin-top: 1rem;
+            text-align: center;
+            font-weight: 500;
+        }
+
+        .error {
+            color: #dc2626;
+        }
+
+        .success {
+            color: #16a34a;
+        }
+
+        /* Light/Dark theme toggle (Optional) */
+        .dark-mode {
+            background-color: #1f2937;
+            color: #e5e7eb;
+        }
+
+        .dark-mode .container {
+            background-color: #374151;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.4), 0 2px 4px -1px rgba(0, 0, 0, 0.3);
+        }
+
+        .dark-mode h1, .dark-mode label {
+            color: #fff; /* Keep labels white in dark mode */
+        }
+        .dark-mode input[type="text"],
+        .dark-mode input[type="url"],
+        .dark-mode input[type="email"],
+        .dark-mode textarea {
+            background-color: #4b5563;
+            border-color: #6b7280;
+            color: #e5e7eb;
+        }
+        .dark-mode #resultArea {
+            background-color: #4b5563;
+            border-color: #6b7280;
+            color: #e5e7eb;
+        }
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .container {
+                padding: 1.5rem;
+                margin: 1rem;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            button {
+                font-size: 1rem;
+            }
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <header class="mb-6">
+            <h1 class="text-3xl font-bold text-center text-gray-800">
+                <i class="fas fa-shield-alt mr-2"></i> Privacy Policy Generator
+            </h1>
+        </header>
+
+        <main>
+            <form id="policyForm" class="space-y-4">
+                <div>
+                    <label for="company_name">Company/Service Name *</label>
+                    <input type="text" id="company_name" name="company_name" required>
+                </div>
+
+                <div>
+                    <label for="website_url">Website/App URL *</label>
+                    <input type="url" id="website_url" name="website_url" required>
+                </div>
+
+                <div>
+                    <label for="contact_email">Contact Email for Privacy *</label>
+                    <input type="email" id="contact_email" name="contact_email" required>
+                </div>
+
+                <div>
+                    <label for="data_collected">Types of Personal Data Collected *</label>
+                    <textarea id="data_collected" name="data_collected" placeholder="e.g., Names, email addresses, IP addresses, cookies, usage data, payment info" required></textarea>
+                </div>
+
+                <div>
+                    <label for="data_usage">How Data is Used *</label>
+                    <textarea id="data_usage" name="data_usage" placeholder="e.g., Service provision, personalization, analytics, marketing, legal compliance" required></textarea>
+                </div>
+
+                <div>
+                    <label for="data_sharing">Data Sharing Practices (Third Parties)</label>
+                    <textarea id="data_sharing" name="data_sharing" placeholder="Specify if data is shared and with whom (e.g., analytics providers, payment processors, advertising partners)"></textarea>
+                </div>
+
+                <div>
+                    <label for="security_measures">Data Security Measures</label>
+                    <textarea id="security_measures" name="security_measures" placeholder="Describe general security practices (e.g., encryption, access controls)"></textarea>
+                </div>
+
+                <div>
+                    <label for="user_rights">User Rights</label>
+                    <textarea id="user_rights" name="user_rights" placeholder="Mention user rights like access, correction, deletion, opt-out"></textarea>
+                </div>
+
+                <div>
+                    <label for="cookie_usage">Cookie Usage</label>
+                    <textarea id="cookie_usage" name="cookie_usage" placeholder="Explain if cookies are used and for what purpose (e.g., essential, analytics, advertising)"></textarea>
+                </div>
+
+                 <div>
+                    <label for="jurisdiction">Primary Jurisdiction (Optional)</label>
+                    <input type="text" id="jurisdiction" name="jurisdiction" placeholder="e.g., California, EU">
+                </div>
+
+                <button type="submit" id="generateBtn" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                    Generate Policy
+                </button>
+            </form>
+
+            <div id="status" class="mt-4 text-center font-semibold"></div>
+
+            <section id="policyResult" class="mt-8">
+                <h2 class="text-xl font-semibold text-gray-700 mb-4">Generated Policy:</h2>
+                <pre id="resultArea" class="bg-gray-100 border border-gray-300 rounded p-4 whitespace-pre-wrap">Your generated policy will appear here...</pre>
+            </section>
+
+        </main>
+
+        <footer class="mt-8 text-center text-gray-500">
+            <p>&copy; 2025 Privacy Policy Generator</p>
+        </footer>
+    </div>
+
+    <script>
+        const form = document.getElementById('policyForm');
+        const resultArea = document.getElementById('resultArea');
+        const statusDiv = document.getElementById('status');
+        const generateBtn = document.getElementById('generateBtn');
+
+        form.addEventListener('submit', async (event) => {
+            event.preventDefault(); // Prevent default form submission
+            resultArea.textContent = 'Generating... Please wait.';
+            statusDiv.textContent = 'Processing...';
+            statusDiv.className = ''; // Reset status class
+            generateBtn.disabled = true; // Disable button during request
+
+            // Collect data from form fields
+            const formData = new FormData(form);
+            const payload = {};
+            formData.forEach((value, key) => {
+                // Only include non-empty values or required fields
+                if (value || form.elements[key]?.required) {
+                    payload[key] = value;
+                }
+            });
+
+            try {
+                // Simulate API call (replace with your actual API endpoint)
+                const response = await new Promise((resolve) => {
+                    setTimeout(() => {
+                        // Replace with actual generated policy or error logic
+                        const mockPolicy = `This is a sample privacy policy generated based on your input.  Please review and modify as needed. \n\nCompany Name: ${payload.company_name}\nWebsite: ${payload.website_url}\nData Collected: ${payload.data_collected}`;
+                        resolve({
+                            ok: true,
+                            json: () => Promise.resolve({ privacy_policy: mockPolicy }),
+                        });
+                    }, 2000); // Simulate 2 seconds loading
+                });
+
+                if (!response.ok) {
+                    // Handle HTTP errors (like 4xx, 5xx)
+                    let errorMsg = `HTTP error! Status: ${response.status}`;
+                    try {
+                        const errorData = await response.json();
+                        errorMsg += ` - ${errorData.error || 'Unknown server error'}`;
+                    } catch (e) {
+                        // Response wasn't JSON or couldn't be parsed
+                        errorMsg += ` - ${response.statusText}`;
+                    }
+                    throw new Error(errorMsg);
+                }
+
+                // Get the JSON response
+                const data = await response.json();
+
+                // Display the generated policy
+                if (data.privacy_policy) {
+                    resultArea.textContent = data.privacy_policy;
+                    statusDiv.textContent = 'Policy generated successfully!';
+                    statusDiv.className = 'success';
+                } else {
+                    throw new Error(data.error || 'Received empty policy from server.');
+                }
+
+            } catch (error) {
+                console.error('Error generating policy:', error);
+                resultArea.textContent = 'Failed to generate policy. Please check console for details.';
+                statusDiv.textContent = `Error: ${error.message}`;
+                statusDiv.className = 'error';
+            } finally {
+                generateBtn.disabled = false; // Re-enable button
+            }
+        });
+
+
+        // Light/Dark mode toggle functionality (Optional)
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark-mode');
+        }
+    </script>
+
+</body>
+</html>

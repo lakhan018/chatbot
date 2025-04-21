@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Privacy Policy Generator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        h1 {
+            color: #333;
+        }
+        form {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            max-width: 600px;
+            margin: auto;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        label {
+            display: block;
+            margin-top: 10px;
+        }
+        input, textarea {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            margin-top: 20px;
+            padding: 10px 15px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+        pre {
+            background-color: #f0f0f0;
+            padding: 15px;
+            border-radius: 8px;
+            white-space: pre-wrap;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Privacy Policy Generator</h1>
+
+<form id="policyForm">
+    <label for="company_name">Company Name:</label>
+    <input type="text" id="company_name" name="company_name" required>
+
+    <label for="website_url">Website URL:</label>
+    <input type="text" id="website_url" name="website_url" required>
+
+    <label for="data_collected">Data Collected:</label>
+    <textarea id="data_collected" name="data_collected" required></textarea>
+
+    <label for="data_usage">Data Usage:</label>
+    <textarea id="data_usage" name="data_usage" required></textarea>
+
+    <label for="data_sharing">Data Sharing:</label>
+    <textarea id="data_sharing" name="data_sharing"></textarea>
+
+    <label for="security_measures">Security Measures:</label>
+    <textarea id="security_measures" name="security_measures"></textarea>
+
+    <label for="user_rights">User Rights:</label>
+    <textarea id="user_rights" name="user_rights"></textarea>
+
+    <label for="cookie_usage">Cookie Usage:</label>
+    <textarea id="cookie_usage" name="cookie_usage"></textarea>
+
+    <label for="contact_email">Contact Email:</label>
+    <input type="email" id="contact_email" name="contact_email" required>
+
+    <label for="jurisdiction">Jurisdiction (Optional):</label>
+    <input type="text" id="jurisdiction" name="jurisdiction">
+
+    <button type="submit">Generate Privacy Policy</button>
+</form>
+
+<div id="result" style="margin-top: 30px;">
+    <h2>Generated Privacy Policy:</h2>
+    <pre id="policyOutput"></pre>
+</div>
+
+<script>
+document.getElementById('policyForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+
+    const formData = new FormData(e.target);
+    const data = {};
+    formData.forEach((value, key) => data[key] = value);
+
+    const response = await fetch('/generate-policy', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+    });
+
+    const result = await response.json();
+    const output = document.getElementById('policyOutput');
+
+    if (result.privacy_policy) {
+        output.textContent = result.privacy_policy;
+    } else {
+        output.textContent = `Error: ${result.error}`;
+    }
+});
+</script>
+
+</body>
+</html>
